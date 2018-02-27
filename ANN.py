@@ -58,11 +58,12 @@ scores = model.evaluate(X_test, y_test, verbose=0)
 print("Baseline Error: %.2f%%" % (100-scores[1]*100))
 print('\n')
 
-# Create Matrix of predictions
+# Create Matrix of predictions and tests
 y_prediction = model.predict_classes(X_test, batch_size=512)
-y_test_matrix = [np.where(r==1)[0][0] for r in y_test]
-y_prediction_matrix = [i for i in y_prediction.tolist()]
+y_test_matrix = [np.where(j==1)[0][0] for j in y_test]
+y_prediction_matrix = [k for k in y_prediction.tolist()]
 
+# Count correct predictions
 count = {0: [0, -1], 1: [0, -1], 2: [0, -1], 3: [0, -1], 4: [0, -1], 5: [0, -1], 6: [0, -1], 7: [0, -1], 8: [0, -1], 9: [0, -1]}
 correct_preds=0
 for i in range(len(y_test)):
@@ -73,7 +74,7 @@ for i in range(len(y_test)):
 
 count = sorted(count.items(), key=lambda x: x[1][0], reverse=True)
 
-
+#Create and print the confusion matrix
 y_test_matrix = pd.Series(y_test_matrix, name='Actual')
 y_prediction_matrix = pd.Series(y_prediction_matrix, name='Predicted')
 df_confusion = pd.crosstab(y_test_matrix, y_prediction_matrix, rownames=['Actual'], colnames=['Predicted'], margins=True)
