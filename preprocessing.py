@@ -1,5 +1,6 @@
 import numpy as np
-from keras.utils import to_categorical
+import pandas as pd
+# from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 
 
@@ -16,7 +17,7 @@ def load_data():
 	#flattened_input = np.reshape(inputs, (6500,784))
 
 	# Convert output labels to categorical vectors
-	encoded_labels = to_categorical(labels, num_classes=10)
+	encoded_labels = pd.Categorical(labels)
 
 	# Bad input output
 	# TODO: Stratified sampling
