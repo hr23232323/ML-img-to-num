@@ -17,8 +17,8 @@ def load_data():
 	#flattened_input = np.reshape(inputs, (6500,784))
 
 	# Convert output labels to categorical vectors
-	encoded_labels = pd.Categorical(labels)
-	#encoded_labels = to_categorical(labels, num_classes=10)
+	#encoded_labels = pd.Categorical(labels)
+	encoded_labels = to_categorical(labels, num_classes=10)
 
 	# Bad input output
 	# TODO: Stratified sampling
