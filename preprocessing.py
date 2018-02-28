@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-# from keras.utils import to_categorical
+from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 
 
