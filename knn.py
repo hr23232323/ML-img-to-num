@@ -6,10 +6,15 @@ from pandas import Series, DataFrame
 
 #For visualization. Matplotlib for basic viz and seaborn for more stylish figures + statistical figures not in MPL.
 import matplotlib.pyplot as plt
+<<<<<<< HEAD
 import seaborn as sns
 from IPython.core.display import Image
 # from IPython import get_ipython
 # get_ipython().magic('matplotlib', 'inline')
+=======
+#import seaborn as sns
+#from IPython.core.display import Image
+>>>>>>> 2633dab887e59fab64eb7ff2a1176cdc2c9f9423
 
 from sklearn.datasets import fetch_mldata, load_boston                                                                       
 from sklearn.utils import shuffle                                                                                            
