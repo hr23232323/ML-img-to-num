@@ -44,8 +44,8 @@ model.compile(optimizer='adam',
 # Train Model
 history = model.fit(X_train, y_train, 
                     validation_data = (X_val, y_val), 
-                    epochs=20, 
-                    batch_size=200)
+                    epochs=10, 
+                    batch_size=64)
 
 
 # Report Results
@@ -57,10 +57,12 @@ print(history.history)
 scores = model.evaluate(X_test, y_test, verbose=0)
 print("Baseline Error: %.2f%%" % (100-scores[1]*100))
 print('\n')
+print(model.summary())
 
 # Create Matrix of predictions and tests
 y_prediction = model.predict_classes(X_test, batch_size=512)
 y_test_matrix = [np.where(j==1)[0][0] for j in y_test]
+
 y_prediction_matrix = [k for k in y_prediction.tolist()]
 
 # Count correct predictions
