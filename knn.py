@@ -4,17 +4,8 @@ import numpy as np
 import pandas as pd
 from pandas import Series, DataFrame
 
-#For visualization. Matplotlib for basic viz and seaborn for more stylish figures + statistical figures not in MPL.
+
 import matplotlib.pyplot as plt
-<<<<<<< HEAD
-import seaborn as sns
-from IPython.core.display import Image
-# from IPython import get_ipython
-# get_ipython().magic('matplotlib', 'inline')
-=======
-#import seaborn as sns
-#from IPython.core.display import Image
->>>>>>> 2633dab887e59fab64eb7ff2a1176cdc2c9f9423
 
 from sklearn.datasets import fetch_mldata, load_boston                                                                       
 from sklearn.utils import shuffle                                                                                            
@@ -78,54 +69,76 @@ for i in range (0,9):
 #     validate_labels.extend(np.repeat(i, (len2 - len1)))
 #     test_labels.extend(np.repeat(i, (length - len2)))
 
-print(validate_labels)
 np.random.seed(666)
 train_data, train_labels = shuffle(train_data, train_labels)
 validate_data, validate_labels = shuffle(validate_data, validate_labels)
 test_data, test_labels = shuffle(test_data, test_labels)
 
-#This function displays one or more images in a grid manner.
-def show_img_with_neighbors(imgs, n=1):                       
-  fig = plt.figure()                                          
-  for i in range(0, n):                                      
-      fig.add_subplot(1, n, i, xticklabels=[], yticklabels=[])
-      if n == 1:                                              
-          img = imgs                                          
-      else:                                                   
-          img = imgs[i]                                       
-      plt.imshow(img.reshape((28, 28)), cmap="Greys")           
-
-#This function shows some images for which k-NN made a mistake
-# For each of the missed image, it will also show k most similar images so that you will get an idea of why it failed. 
-def show_erroring_images_for_model(errors_in_model, num_img_to_print, model, n_neighbors): 
-  for errorImgIndex in errors_in_model[:num_img_to_print]:                             
-      error_image = test_data[errorImgIndex].reshape((28,28))                           
-      not_needed, result = model.kneighbors(error_image, n_neighbors=n_neighbors)      
-      show_img_with_neighbors(error_image)                                             
-      show_img_with_neighbors(train_data[result[0],:], len(result[0]))
-
-#Step 1: Create a classifier with appropriate parameters
 knn_model_k1 = KNeighborsClassifier(n_neighbors=1, algorithm='auto')
-# #Step 2: Fit it with training data
-knn_model_k1.fit(train_data, train_labels)
-# #Print the model so that you know all parameters
-print(knn_model_k1)                             
-# #Step 3: Make predictions based on testing data
+knn_model_k1.fit(train_data, train_labels)                         
 predictions_knn_model_k1 = knn_model_k1.predict(validate_data)
-# #Step 4: Evaluate the data
-print("Accuracy of K-NN with k=1 is", metrics.accuracy_score(validate_labels, predictions_knn_model_k1))  
+print("Accuracy of K-NN with k=1 is", metrics.accuracy_score(validate_labels, predictions_knn_model_k1))
+
+test_matrix = validate_labels
+prediction_matrix = [i for i in predictions_knn_model_k1.tolist()]
+
+count = {0: [0, -1], 1: [0, -1], 2: [0, -1], 3: [0, -1], 4: [0, -1], 5: [0, -1], 6: [0, -1], 7: [0, -1], 8: [0, -1], 9: [0, -1]}
+correct_preds=0
+for i in range(len(test_matrix)):
+    if test_matrix[i] == prediction_matrix[i]:
+        correct_preds += 1
+    else:
+        count[prediction_matrix[i]] = [count[prediction_matrix[i]][0]+1, i]
+
+count = sorted(count.items(), key=lambda x: x[1][0], reverse=True)
+
+test_matrix = pd.Series(test_matrix, name='Actual')
+prediction_matrix = pd.Series(prediction_matrix, name='Predicted')
+df_confusion = pd.crosstab(test_matrix, prediction_matrix, rownames=['Actual'], colnames=['Predicted'], margins=True)
+print('\n', df_confusion)  
 
 knn_model_k3 = KNeighborsClassifier(n_neighbors=3, algorithm='auto')
 knn_model_k3.fit(train_data, train_labels)
-print (train_labels[0:500])
-predictions_knn_model_k3 = knn_model_k3.predict(validate_data)
-print (predictions_knn_model_k3[0:500])                                              
+predictions_knn_model_k3 = knn_model_k3.predict(validate_data)                                           
 print ("Accuracy of K-NN with k=3 is", metrics.accuracy_score(validate_labels, predictions_knn_model_k3))
+
+test_matrix = validate_labels
+prediction_matrix = [i for i in predictions_knn_model_k3.tolist()]
+
+count = {0: [0, -1], 1: [0, -1], 2: [0, -1], 3: [0, -1], 4: [0, -1], 5: [0, -1], 6: [0, -1], 7: [0, -1], 8: [0, -1], 9: [0, -1]}
+correct_preds=0
+for i in range(len(test_matrix)):
+    if test_matrix[i] == prediction_matrix[i]:
+        correct_preds += 1
+    else:
+        count[prediction_matrix[i]] = [count[prediction_matrix[i]][0]+1, i]
+
+count = sorted(count.items(), key=lambda x: x[1][0], reverse=True)
+
+test_matrix = pd.Series(test_matrix, name='Actual')
+prediction_matrix = pd.Series(prediction_matrix, name='Predicted')
+df_confusion = pd.crosstab(test_matrix, prediction_matrix, rownames=['Actual'], colnames=['Predicted'], margins=True)
+print('\n', df_confusion) 
 
 knn_model_k5 = KNeighborsClassifier(n_neighbors=5, algorithm='auto')
 knn_model_k5.fit(train_data, train_labels)
 predictions_knn_model_k5 = knn_model_k5.predict(validate_data)                                               
 print ("Accuracy of K-NN with k=5 is", metrics.accuracy_score(validate_labels, predictions_knn_model_k5))
-#Let us now see the first five images that were predicted incorrectly see what the issue is                                  
-# errors_knn_model_k1 = [i for i in range(0, len(test_images)) if predictions_knn_model_k1[i] != test_labels[i]]
-# show_erroring_images_for_model(errors_knn_model_k1, 5, knn_model_k1, 1)
+
+test_matrix = validate_labels
+prediction_matrix = [i for i in predictions_knn_model_k5.tolist()]
+
+count = {0: [0, -1], 1: [0, -1], 2: [0, -1], 3: [0, -1], 4: [0, -1], 5: [0, -1], 6: [0, -1], 7: [0, -1], 8: [0, -1], 9: [0, -1]}
+correct_preds=0
+for i in range(len(test_matrix)):
+    if test_matrix[i] == prediction_matrix[i]:
+        correct_preds += 1
+    else:
+        count[prediction_matrix[i]] = [count[prediction_matrix[i]][0]+1, i]
+
+count = sorted(count.items(), key=lambda x: x[1][0], reverse=True)
+
+test_matrix = pd.Series(test_matrix, name='Actual')
+prediction_matrix = pd.Series(prediction_matrix, name='Predicted')
+df_confusion = pd.crosstab(test_matrix, prediction_matrix, rownames=['Actual'], colnames=['Predicted'], margins=True)
+print('\n', df_confusion) 
