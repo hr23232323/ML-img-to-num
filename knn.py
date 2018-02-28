@@ -6,8 +6,8 @@ from pandas import Series, DataFrame
 
 #For visualization. Matplotlib for basic viz and seaborn for more stylish figures + statistical figures not in MPL.
 import matplotlib.pyplot as plt
-import seaborn as sns
-from IPython.core.display import Image
+#import seaborn as sns
+#from IPython.core.display import Image
 
 from sklearn.datasets import fetch_mldata, load_boston                                                                       
 from sklearn.utils import shuffle                                                                                            
